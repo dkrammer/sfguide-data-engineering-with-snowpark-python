@@ -38,6 +38,9 @@ def load_raw_table(session, tname=None, s3dir=None, year=None, schema=None):
 # SNOWFLAKE ADVANTAGE: Warehouse elasticity (dynamic scaling)
 
 def load_all_raw_tables(session):
+    session.use_warehouse('hol_wh')
+    session.use_database('hol_db')
+    session.query_tag = (f'hol-wh-xl-a')
     _ = session.sql("ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE").collect()
 
     for s3dir, data in TABLE_DICT.items():
